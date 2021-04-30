@@ -12,7 +12,7 @@ Add `-v` before the filename to get all the details. Use `python3` instead of `p
 
 ### Unit Tests
 
-All the other flies have their tests in separate files. For me in VS Code, Pylance is unhappy with the imports, but they work for testing.
+All the other files have their tests in separate files. For me in VS Code, Pylance is unhappy with the imports, but they work for testing.
 
 Run `python -m unittest [filename]` to run the unit tests. Add `-v` before the filename for details. Leave out the filename to run all the test files at once.
 
