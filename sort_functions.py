@@ -1,18 +1,23 @@
+def swap (arr, idx1, idx2):
+    """
+    swaps the elements of the array at the identified indices
+    """
+    temp = arr[idx1]
+    arr[idx1] = arr[idx2]
+    arr[idx2] = temp
+
 def bubble_sort(arr):
     """
     includes optimization if sort completes early
-    descent if data almost sorted; really bad if in reverse order
+    okay if data almost sorted; really bad if in reverse order
     """
     for i in range(len(arr)):
-        swap = False
+        swapped = False
         for j in range(1, len(arr) - i):
             if arr[j] < arr[j - 1]:
-                temp = arr[j]
-                arr[j] = arr[j - 1]
-                arr[j - 1] = temp
-                swap = True
-            # print(arr)
-        if not swap:
+                swap(arr, j, j-1)
+                swapped = True
+        if not swapped:
             break
     return arr
 
@@ -25,10 +30,7 @@ def selection_sort(arr):
         for j in range(i + 1, len(arr)):
             if arr[j] < arr[min_idx]:
                 min_idx = j
-        temp = arr[i]
-        arr[i] = arr[min_idx]
-        arr[min_idx] = temp
-        print(arr)
+        swap(arr, i, min_idx)
     return arr
 
 def insertion_sort(arr):
@@ -48,6 +50,9 @@ def insertion_sort(arr):
     return arr
             
 def merge(arr1, arr2):
+    """
+    merges two sorted arrays
+    """
     idx_1 = 0
     idx_2 = 0
     arr = []
@@ -65,10 +70,52 @@ def merge(arr1, arr2):
     return arr
                 
 def merge_sort(arr):
+    """
+    sorts two arrays with merge sort algorithm
+    """
+    if len(arr) == 0:
+        return []
     if len(arr) == 1:
         return arr
     else:
-        length = len(arr)
-        arr1 = merge_sort(arr[:length//2])
-        arr2 = merge_sort(arr[length//2:])
+        arr1 = merge_sort(arr[:len(arr)//2])
+        arr2 = merge_sort(arr[len(arr)//2:])
         return merge(arr1, arr2)
+
+def pivot(arr, start = 0, end = 0):
+    """
+    takes array or portion of an array starting with index start and ending with index end, 
+    makes element at the first index the pivot, 
+    puts all values less than pivot to left of pivot, and values greater than the pivot to the right
+    """
+    pvt_idx = start
+    if end == 0:
+        end = len(arr) - 1
+    end_idx = end
+
+    while pvt_idx < end_idx:
+        if arr[end_idx] > arr[pvt_idx]:
+            end_idx -= 1
+        elif arr[pvt_idx] > arr[pvt_idx + 1]:
+            swap(arr, pvt_idx, pvt_idx + 1)
+            pvt_idx += 1
+        else:
+            swap(arr, pvt_idx + 1, end_idx)
+            end_idx = end_idx - 1
+    return pvt_idx
+
+def quick_sort(arr):
+    """
+    sorts array via quicksort method
+    """
+    def quick_sort_recursive(arr, start, end):
+        if end - start < 1:
+            return arr
+        else:
+            pvt_idx = pivot(arr, start, end)
+            quick_sort_recursive(arr, start, pvt_idx - 1)
+            quick_sort_recursive(arr, pvt_idx + 1, end)
+            return arr
+
+    quick_sort_recursive(arr, 0, len(arr) -1)
+    return arr
